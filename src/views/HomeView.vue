@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="home__content">
+    <div class="home__animation">
       <div class="home__stack home__stack-css">
         <img width="100%" src="../assets/css.svg" />
       </div>
@@ -18,12 +18,88 @@
         <img class="home__img" width="90%" src="../assets/perfil.png" />
       </div>
     </div>
+
+    <div class="home__apresentation">
+      <div>
+        <span>{{ apresentationName }}</span>
+        <span v-if="!isFullName" class="home__typing"></span>
+      </div>
+
+      <div>
+        <span>{{ apresentationProfession }}</span>
+        <span
+          v-if="isFullName && !isFullProfession"
+          class="home__typing"
+        ></span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "HomeView",
+
+  data() {
+    return {
+      apresentation: {
+        name: [],
+        profession: [],
+      },
+      nameSet: "Vitor Alves de Carvalho",
+      professionSet: "Desenvolvedor front-end",
+    };
+  },
+
+  created() {
+    this.setApresentation();
+  },
+
+  methods: {
+    setApresentation() {
+      if (this.isFullName && this.isFullProfession) return;
+
+      setTimeout(() => {
+        if (!this.isFullName) {
+          this.setApresentationName();
+        } else {
+          this.setApresentationProfession();
+        }
+
+        this.setApresentation();
+      }, 300);
+    },
+
+    setApresentationName() {
+      this.apresentation.name.push(
+        this.nameSet[this.apresentation.name.length]
+      );
+    },
+
+    setApresentationProfession() {
+      this.apresentation.profession.push(
+        this.professionSet[this.apresentation.profession.length]
+      );
+    },
+  },
+
+  computed: {
+    apresentationName() {
+      return this.apresentation.name.join("");
+    },
+
+    apresentationProfession() {
+      return this.apresentation.profession.join("");
+    },
+
+    isFullName() {
+      return this.apresentation.name.length === this.nameSet.length;
+    },
+
+    isFullProfession() {
+      return this.apresentation.profession.length === this.professionSet.length;
+    },
+  },
 };
 </script>
 
@@ -31,17 +107,25 @@ export default {
 .home {
   background: #120d1d;
   height: 100vh;
-  padding: 100px;
-  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
 
-  &__content {
+  &__animation {
     width: 300px;
     height: 300px;
-    margin: auto;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 480px) {
+      width: 250px;
+      height: 250px;
+    }
   }
 
   &__stack {
@@ -80,6 +164,30 @@ export default {
   &__img {
     border: 4px solid #5b25b9;
     border-radius: 50%;
+  }
+
+  &__apresentation {
+    margin-top: 60px;
+    font-size: 48px;
+
+    @media (max-width: 480px) {
+      font-size: 28px;
+    }
+  }
+
+  &__typing {
+    display: inline-block;
+    margin-left: 4px;
+    height: 36px;
+    width: 4px;
+    background-color: white;
+    animation-name: animation-typing;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+
+    @media (max-width: 480px) {
+      height: 20px;
+    }
   }
 }
 
@@ -148,6 +256,20 @@ export default {
   100% {
     top: calc(100% - 60px);
     left: 0;
+  }
+}
+
+@keyframes animation-typing {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 </style>

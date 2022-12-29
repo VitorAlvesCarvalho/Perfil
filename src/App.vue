@@ -10,12 +10,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
 }
 
-body {
+* {
+  box-sizing: border-box;
+}
+
+body,
+p {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
 }
 </style>
